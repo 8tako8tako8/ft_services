@@ -1,0 +1,134 @@
+nginxコンテナ
+
+apk update
+apk add openrc
+apk add nginx
+adduser -D -g 'www' www
+mkdir /www
+chown -R www:www /var/lib/nginx
+chown -R www:www /www
+mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
+vi /etc/nginx/nginx.conf
+vi /www/index.html
+#rc-statusで確認
+touch /run/openrc/softlevel
+
+こちらを採用
+apk update
+apk add openrc
+apk add nginx
+sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf
+sed -i 's/^#rc_provide="!net"/rc_provide="loopback net"/' /etc/rc.conf
+sed -i'.bak' '/getty/d' /etc/inittab
+sed -i'.bak' 's/mount -t tmpfs/# mount -t tmpfs/' /lib/rc/sh/init.sh
+sed -i'.bak' 's/hostname $opts/# hostname $opts/' /etc/init.d/hostname
+sed -i'.bak' 's/cgroup_add_service$/# cgroup_add_service/' /lib/rc/sh/openrc-run.sh
+mkdir /run/openrc
+touch /run/openrc/softlevel
+sed -i'.bak' 's/return 404;/root html;\n\t\tindex index.html;/' /etc/nginx/conf.d/default.conf
+
+rc-status
+rc-service nginx checkconfig
+nginx -t
+rc-service nginx start
+
+#openssl
+openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/OU=Student/CN=localhost" \
+    -newkey rsa:2048 -keyout /etc/ssl/server.key -out /etc/ssl/server.crt
+
+nginxwにssh接続
+apk update
+apk add openssh
+/etc/init.d/sshd start
+/etc/ssh/sshd_confの編集
+echo "root:admin" | chpasswd
+/etc/init.d/sshd restart
+
+ssh root@localhost -p 20022
+
+sudo minikube service nginx-service --url
+ssh root@10.0.2.15
+
+wordpressのコンテナ
+
+apk update
+apk add openrc
+sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
+    && sed -i 's/^#rc_provide="!net"/rc_provide="loopback net"/' /etc/rc.conf \
+    && sed -i'.bak' '/getty/d' /etc/inittab \
+    && sed -i'.bak' 's/mount -t tmpfs/# mount -t tmpfs/' /lib/rc/sh/init.sh \
+    && sed -i'.bak' 's/hostname $opts/# hostname $opts/' /etc/init.d/hostname \
+    && sed -i'.bak' 's/cgroup_add_service$/# cgroup_add_service/' /lib/rc/sh/openrc-run.sh \
+    && mkdir /run/openrc \
+    && touch /run/openrc/softlevel
+
+apk add lighttpd php7-common php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom
+sed -i 's/#   include "mod_fastcgi.conf"/include "mod_fastcgi.conf"/g' /etc/lighttpd/lighttpd.conf
+sed -i 's/# server.port          = 81/server.port = 5050/g' /etc/lighttpd/lighttpd.conf
+sed -i 's/usr\/bin\/php-cgi/usr\/bin\/php-cgi7/g' /etc/lighttpd/mod_fastcgi.conf
+rc-status
+rc-service lighttpd start && rc-update add lighttpd default
+apk add wget mysql-client
+/etc/init.d/lighttpd restart
+mkdir -p /usr/share/webapps/
+cd /usr/share/webapps/
+wget http://wordpress.org/latest.tar.gz
+tar -xzvf latest.tar.gz
+rm latest.tar.gz
+chown -R lighttpd /usr/share/webapps/
+ln -s /usr/share/webapps/wordpress/ /var/www/localhost/htdocs/wordpress
+
+
+mysqlのコンテナ
+
+apk update
+apk add openrc
+sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
+    && sed -i 's/^#rc_provide="!net"/rc_provide="loopback net"/' /etc/rc.conf \
+    && sed -i'.bak' '/getty/d' /etc/inittab \
+    && sed -i'.bak' 's/mount -t tmpfs/# mount -t tmpfs/' /lib/rc/sh/init.sh \
+    && sed -i'.bak' 's/hostname $opts/# hostname $opts/' /etc/init.d/hostname \
+    && sed -i'.bak' 's/cgroup_add_service$/# cgroup_add_service/' /lib/rc/sh/openrc-run.sh \
+    && mkdir /run/openrc \
+    && touch /run/openrc/softlevel
+
+apk add mysql mysql-client
+/etc/init.d/mariadb setup
+rc-status
+rc-service mariadb start
+
+echo "CREATE DATABASE wpdb;"| mysql -u root --skip-password
+echo "CREATE USER 'test'@'%' identified by 'password';"| mysql -u root --skip-password
+echo "GRANT ALL PRIVILEGES ON wpdb.* TO 'test'@'%';"| mysql -u root --skip-password
+echo "FLUSH PRIVILEGES;"| mysql -u root --skip-password
+
+
+phpmyadminのコンテナ
+
+apk update
+apk add openrc
+sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
+    && sed -i 's/^#rc_provide="!net"/rc_provide="loopback net"/' /etc/rc.conf \
+    && sed -i'.bak' '/getty/d' /etc/inittab \
+    && sed -i'.bak' 's/mount -t tmpfs/# mount -t tmpfs/' /lib/rc/sh/init.sh \
+    && sed -i'.bak' 's/hostname $opts/# hostname $opts/' /etc/init.d/hostname \
+    && sed -i'.bak' 's/cgroup_add_service$/# cgroup_add_service/' /lib/rc/sh/openrc-run.sh \
+    && mkdir /run/openrc \
+    && touch /run/openrc/softlevel
+
+apk update
+apk add lighttpd php7-common php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom
+sed -i 's/#   include "mod_fastcgi.conf"/include "mod_fastcgi.conf"/g' /etc/lighttpd/lighttpd.conf
+sed -i 's/# server.port          = 81/server.port = 5000/g' /etc/lighttpd/lighttpd.conf
+sed -i 's/usr\/bin\/php-cgi/usr\/bin\/php-cgi7/g' /etc/lighttpd/mod_fastcgi.conf
+rc-status
+rc-service lighttpd start && rc-update add lighttpd default
+apk add mysql-client php-mysqli
+mkdir -p /usr/share/webapps/
+wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.2-all-languages.tar.gz
+tar zxvf phpMyAdmin-5.0.2-all-languages.tar.gz
+rm phpMyAdmin-5.0.2-all-languages.tar.gz
+mv phpMyAdmin-5.0.2-all-languages phpmyadmin
+chmod -R 777 /usr/share/webapps/
+ln -s /usr/share/webapps/phpmyadmin/ /var/www/localhost/htdocs/phpmyadmin
+
