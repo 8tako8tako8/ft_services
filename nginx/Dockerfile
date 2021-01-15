@@ -29,19 +29,14 @@ RUN echo 'root:password' | chpasswd \
 #openssl
 RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/OU=Student/CN=localhost" \
     -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
-#RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key \
-#    -out /etc/ssl/certs/nginx-selfsigned.crt
 
-#COPY ./default.conf /etc/nginx/conf.d/default.conf
-
-#COPY ./srcs/default.conf /etc/nginx/conf.d/
 COPY ./srcs/nginx.conf /etc/nginx/
 COPY ./srcs/index.html /var/lib/nginx/html/
 COPY ./srcs/sshd_config /etc/ssh/
-COPY ./srcs/entrypoint.sh .
+COPY ./srcs/entrypoint.sh /
 RUN chmod 744 /etc/nginx/nginx.conf \
     && chmod 744 /var/lib/nginx/html/index.html \
     && chmod 744 /etc/ssh/sshd_config \
-    && chmod 744 ./entrypoint.sh
+    && chmod 744 /entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
