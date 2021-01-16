@@ -1,7 +1,8 @@
 FROM alpine:latest
 
 RUN apk update \
-    && apk add openrc
+    && apk add openrc \
+    && apk add mysql mysql-client
 
 RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
     && sed -i 's/^#rc_provide="!net"/rc_provide="loopback net"/' /etc/rc.conf \
@@ -12,4 +13,7 @@ RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
     && mkdir /run/openrc \
     && touch /run/openrc/softlevel
 
-CMD ["/bin/sh"]
+COPY ./srcs/entrypoint.sh /
+RUN chmod 744 /entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]

@@ -25,7 +25,7 @@ RUN adduser -D -g 'www' www \
     && chown -R www:www /var/lib/nginx \
     && chown -R www:www /www
 
-COPY ./nginx.conf /etc/nginx/
+COPY ./srcs/nginx.conf /etc/nginx/
 RUN chmod 744 /etc/nginx/nginx.conf
 
 RUN cd /www/ \

@@ -1,7 +1,6 @@
 #!/bin/sh
 #phpfpmの起動
-#php-fpm7
+rc-status
+rc-service php-fpm7 start
 #nginxの起動
-#nginx -g 'daemon off;'
-
-tail -f /dev/null
+nginx -g 'daemon off;'
