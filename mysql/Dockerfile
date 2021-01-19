@@ -13,6 +13,9 @@ RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
     && mkdir /run/openrc \
     && touch /run/openrc/softlevel
 
+COPY ./srcs/mariadb-server.cnf /etc/my.cnf.d/
+RUN chmod 744 /etc/my.cnf.d/mariadb-server.cnf
+
 COPY ./srcs/entrypoint.sh /
 RUN chmod 744 /entrypoint.sh
 
