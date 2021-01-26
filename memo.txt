@@ -1,3 +1,9 @@
+systemctl stop nginx
+systemctl start nginx
+sudo minikube start --vm-driver=none --cpus=4 --memory='4g' --extra-config=apiserver.service-node-port-range=1-65535
+sudo minikube dashboard
+sudo minikube stop
+
 nginxコンテナ
 
 apk update
@@ -107,5 +113,16 @@ mv phpMyAdmin-5.0.2-all-languages phpmyadmin
 chmod -R 777 /usr/share/webapps/
 ln -s /usr/share/webapps/phpmyadmin/ /var/www/localhost/htdocs/phpmyadmin
 
+ftpsのコンテナ
+docker run -d -p 21:21 -p 30000-30001:30000-30001 --name ftps ftps_img
+lftp -u kmorimot,password localhost
 
-wordpress,php,mysql
+＃port＝21が使用されてる時
+sudo lsof -i -P | grep "LISTEN"
+sudo service vsftpd stop
+
+metallbのインストール
+sudo kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
+sudo kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+sudo kubectl apply -f metallb-config.yaml
