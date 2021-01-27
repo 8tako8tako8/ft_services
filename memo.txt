@@ -4,6 +4,8 @@ sudo minikube start --vm-driver=none --cpus=4 --memory='4g' --extra-config=apise
 sudo minikube dashboard
 sudo minikube stop
 
+sudo kubectl exec --stdin --tty pod/phpmyadmin-deployment-85b557bd88-4vsqc -- /bin/sh
+
 nginxコンテナ
 
 apk update
@@ -74,6 +76,9 @@ rm latest.tar.gz
 chown -R lighttpd /usr/share/webapps/
 ln -s /usr/share/webapps/wordpress/ /var/www/localhost/htdocs/wordpress
 
+https://10.0.2.15/wordpress
+https://10.0.2.15:5050/wp-login.php
+admin:password
 
 mysqlのコンテナ
 
@@ -96,7 +101,6 @@ echo "FLUSH PRIVILEGES;"| mysql -u root --skip-password
 
 phpmyadminのコンテナ
 
-
 apk update
 apk add lighttpd php7-common php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom
 sed -i 's/#   include "mod_fastcgi.conf"/include "mod_fastcgi.conf"/g' /etc/lighttpd/lighttpd.conf
@@ -112,6 +116,9 @@ rm phpMyAdmin-5.0.2-all-languages.tar.gz
 mv phpMyAdmin-5.0.2-all-languages phpmyadmin
 chmod -R 777 /usr/share/webapps/
 ln -s /usr/share/webapps/phpmyadmin/ /var/www/localhost/htdocs/phpmyadmin
+
+https://10.0.2.15/phpmyadmin
+http://10.0.2.15:5000
 
 ftpsのコンテナ
 docker run -d -p 21:21 -p 30000-30001:30000-30001 --name ftps ftps_img
