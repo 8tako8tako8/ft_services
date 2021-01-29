@@ -3,6 +3,6 @@
 rc-status
 rc-service sshd start
 
-nginx -g 'daemon off;'
+#nginx -g 'daemon off;'
 
-#tail -f /dev/null
+tail -f /dev/null

@@ -1,6 +1,7 @@
 systemctl stop nginx
 systemctl start nginx
 sudo minikube start --vm-driver=none --cpus=4 --memory='4g' --extra-config=apiserver.service-node-port-range=1-65535
+sudo minikube start --vm-driver=none --extra-config=apiserver.service-node-port-range=1-65535
 sudo minikube dashboard
 sudo minikube stop
 
