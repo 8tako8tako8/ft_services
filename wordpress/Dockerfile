@@ -2,6 +2,7 @@ FROM alpine:latest
 
 RUN apk update \
     && apk add openrc \
+    && apk add openssl \
     && apk add nginx \
     && apk add php php7-fpm php7-phar php7-mcrypt php7-soap php7-openssl php7-gmp php7-pdo_odbc php7-json php7-dom php7-pdo php7-zip php7-mysqli php7-sqlite3 php7-apcu php7-pdo_pgsql php7-bcmath php7-gd php7-odbc php7-pdo_mysql php7-pdo_sqlite php7-gettext php7-xmlreader php7-xmlrpc php7-bz2 php7-iconv php7-pdo_dblib php7-curl php7-ctype \
     && apk add wget curl sudo
@@ -24,6 +25,10 @@ RUN adduser -D -g 'www' www \
     && mkdir /www \
     && chown -R www:www /var/lib/nginx \
     && chown -R www:www /www
+
+#openssl
+RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/OU=Student/CN=localhost" \
+    -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 
 COPY ./srcs/nginx.conf /etc/nginx/
 RUN chmod 744 /etc/nginx/nginx.conf
