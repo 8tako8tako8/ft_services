@@ -2,7 +2,9 @@ FROM alpine:latest
 
 RUN apk update \
     && apk add openrc \
-    && apk add influxdb
+    && apk add influxdb \
+    && apk add libc6-compat \
+    && apk add wget
 
 #openrcの初期設定
 RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
@@ -13,6 +15,16 @@ RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
     && sed -i'.bak' 's/cgroup_add_service$/# cgroup_add_service/' /lib/rc/sh/openrc-run.sh \
     && mkdir /run/openrc \
     && touch /run/openrc/softlevel
+
+RUN mkdir -p /var/lib/influxdb
+
+#telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
+RUN tar xf telegraf-1.17.2_linux_amd64.tar.gz
+RUN rm telegraf-1.17.2_linux_amd64.tar.gz
+RUN mkdir -p /etc/telegraf
+COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
+RUN chmod 777 /etc/telegraf/telegraf.conf
 
 COPY ./srcs/entrypoint.sh /
 RUN chmod 744 /entrypoint.sh

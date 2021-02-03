@@ -144,12 +144,34 @@ sudo kubectl create secret generic -n metallb-system memberlist --from-literal=s
 sudo kubectl apply -f metallb-config.yaml
 
 influxdb
-wget https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3_linux_amd64.tar.gz
-tar xvfz influxdb2-2.0.3_linux_amd64.tar.gz
-rm influxdb2-2.0.3_linux_amd64.tar.gz
+#wget https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3_linux_amd64.tar.gz
+#tar xvfz influxdb2-2.0.3_linux_amd64.tar.gz
+#rm influxdb2-2.0.3_linux_amd64.tar.gz
 
-apk add influxdb
+rc-status
+rc-service influxdb start
+
+wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
+mkdir -p /usr/src /etc/telegraf
+tar -C /usr/src -xzf telegraf-1.17.2_linux_amd64.tar.gz
+mv /usr/src/telegraf*/etc/telegraf/telegraf.conf /etc/telegraf/
+
+
 
 telegraf
 wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
 tar xf telegraf-1.17.2_linux_amd64.tar.gz
+rm telegraf-1.17.2_linux_amd64.tar.gz
+
+wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
+mkdir -p /usr/src /etc/telegraf
+tar -C /usr/src -xzf telegraf-1.17.2_linux_amd64.tar.gz
+rm telegraf-1.17.2_linux_amd64.tar.gz
+mv /usr/src/telegraf*/etc/telegraf/telegraf.conf /etc/telegraf/
+mkdir /etc/telegraf/telegraf.d
+cp -a /usr/src/telegraf*/usr/bin/telegraf /usr/bin/
+
+grafana
+wget https://dl.grafana.com/oss/release/grafana-7.3.7.linux-amd64.tar.gz
+tar -zxvf grafana-7.3.7.linux-amd64.tar.gz
+rm grafana-7.3.7.linux-amd64.tar.gz
