@@ -5,7 +5,8 @@ RUN apk update \
     && apk add openssl \
     && apk add nginx \
     && apk add php php7-fpm php7-phar php7-mcrypt php7-soap php7-openssl php7-gmp php7-pdo_odbc php7-json php7-dom php7-pdo php7-zip php7-mysqli php7-sqlite3 php7-apcu php7-pdo_pgsql php7-bcmath php7-gd php7-odbc php7-pdo_mysql php7-pdo_sqlite php7-gettext php7-xmlreader php7-xmlrpc php7-bz2 php7-iconv php7-pdo_dblib php7-curl php7-ctype \
-    && apk add wget curl sudo
+    && apk add wget curl sudo \
+    && apk add libc6-compat
 
 #mkdirしないとdaemon offでエラー出る
 RUN mkdir ーp /run/nginx
@@ -41,6 +42,14 @@ RUN cd /www/ \
 
 COPY ./srcs/wp-config.php /www/wordpress/
 RUN chmod 744 /www/wordpress/wp-config.php
+
+#telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
+RUN tar xf telegraf-1.17.2_linux_amd64.tar.gz
+RUN rm telegraf-1.17.2_linux_amd64.tar.gz
+RUN mkdir -p /etc/telegraf
+COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
+RUN chmod 777 /etc/telegraf/telegraf.conf
 
 COPY ./srcs/entrypoint.sh /
 RUN chmod 744 /entrypoint.sh

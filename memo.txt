@@ -1,6 +1,15 @@
 systemctl stop nginx
 systemctl start nginx
 sudo minikube start --vm-driver=none --cpus=4 --memory='4g' --extra-config=apiserver.service-node-port-range=1-65535
+sudo minikube start --vm-driver=docker --cpus=4 --memory='4g' --extra-config=apiserver.service-node-port-range=1-65535
+minikube start --vm-driver=docker --cpus=4 --memory='4g' --extra-config=apiserver.service-node-port-range=1-65535
+
+sudo minikube start --vm-driver=none --extra-config=apiserver.service-node-port-range=1-65535
+
+minikube start --vm-driver=docker --cpus=4 --memory='4g' --extra-config=apiserver.service-node-port-range=1-65535
+minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-65535
+
+minikube start --vm-driver=none --cpus=4 --memory='4g' --extra-config=apiserver.service-node-port-range=1-65535
 sudo minikube start --vm-driver=none --extra-config=apiserver.service-node-port-range=1-65535
 sudo minikube dashboard
 sudo minikube stop
@@ -56,7 +65,7 @@ echo "root:admin" | chpasswd
 ssh root@localhost -p 20022
 
 sudo minikube service nginx-service --url
-ssh root@10.0.2.15
+ssh root@10.0.2.15 -p 22
 
 wordpressのコンテナ
 
@@ -144,19 +153,11 @@ sudo kubectl create secret generic -n metallb-system memberlist --from-literal=s
 sudo kubectl apply -f metallb-config.yaml
 
 influxdb
-#wget https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3_linux_amd64.tar.gz
-#tar xvfz influxdb2-2.0.3_linux_amd64.tar.gz
-#rm influxdb2-2.0.3_linux_amd64.tar.gz
-
-rc-status
-rc-service influxdb start
-
-wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
-mkdir -p /usr/src /etc/telegraf
-tar -C /usr/src -xzf telegraf-1.17.2_linux_amd64.tar.gz
-mv /usr/src/telegraf*/etc/telegraf/telegraf.conf /etc/telegraf/
-
-
+influx
+SHOW DATABASES
+USE grafana
+SHOW measurements
+SELECT * from cpu
 
 telegraf
 wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz

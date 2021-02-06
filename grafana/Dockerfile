@@ -4,7 +4,9 @@ RUN apk update \
     && apk add openrc \
     && apk add openssl \
     && apk add libc6-compat \
-    && apk add wget
+    && apk add wget \
+    && apk add vsftpd \
+    && apk add lftp
 
 #openrcの初期設定
 RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
@@ -28,6 +30,17 @@ RUN rm telegraf-1.17.2_linux_amd64.tar.gz
 RUN mkdir -p /etc/telegraf
 COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 RUN chmod 777 /etc/telegraf/telegraf.conf
+
+RUN adduser -D kmorimot \
+    && echo "kmorimot:password" | chpasswd
+
+#openssl
+RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/OU=Student/CN=localhost" \
+    -newkey rsa:2048 -keyout /etc/ssl/private/server.key -out /etc/ssl/certs/server.crt
+
+COPY ./srcs/grafana.db /grafana-7.3.7/data/
+
+COPY ./vsftpd.conf /etc/vsftpd/vsftpd.conf
 
 COPY ./srcs/entrypoint.sh /
 RUN chmod 744 /entrypoint.sh

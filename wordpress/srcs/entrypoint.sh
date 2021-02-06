@@ -13,7 +13,7 @@ wp user create kmorimot kmorimot@example.com --display_name="kmorimot" --role=ed
 wp user create john john@example.com --display_name="john" --role=editor --user_pass="password" --path=/www/wordpress
 wp user create kao kao@example.com --display_name="kao" --role=author --user_pass="password" --path=/www/wordpress
 
-
+/telegraf-1.17.2/usr/bin/telegraf --config /etc/telegraf/telegraf.conf &
 
 #nginxの起動
 nginx -g 'daemon off;'

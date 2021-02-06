@@ -5,7 +5,8 @@ RUN apk update \
     && apk add openssl \
     && apk add nginx \
     && apk add php7-fpm php7-session php7-common php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom \
-    && apk add wget
+    && apk add wget \
+    && apk add libc6-compat
 
 RUN mkdir ーp /run/nginx
 
@@ -39,6 +40,14 @@ RUN chmod 744 /www/phpmyadmin/config.inc.php
 
 COPY ./srcs/nginx.conf /etc/nginx/
 RUN chmod 744 /etc/nginx/nginx.conf
+
+#telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
+RUN tar xf telegraf-1.17.2_linux_amd64.tar.gz
+RUN rm telegraf-1.17.2_linux_amd64.tar.gz
+RUN mkdir -p /etc/telegraf
+COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
+RUN chmod 777 /etc/telegraf/telegraf.conf
 
 COPY ./srcs/entrypoint.sh /
 RUN chmod 744 /entrypoint.sh

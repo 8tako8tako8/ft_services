@@ -18,4 +18,5 @@ mysql -e "FLUSH PRIVILEGES;"
 rc-status
 rc-update add mariadb
 /etc/init.d/mariadb restart
-tail -f /dev/null
+/telegraf-1.17.2/usr/bin/telegraf --config /etc/telegraf/telegraf.conf
+#tail -f /dev/null

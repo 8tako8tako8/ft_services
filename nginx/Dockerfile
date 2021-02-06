@@ -2,9 +2,10 @@ FROM alpine:latest
 
 RUN apk update \
     && apk add openrc \
-        nginx \
-        openssl \
-        openssh
+    && apk add nginx \
+    && apk add openssl \
+    && apk add openssh \
+    && apk add libc6-compat
 
 #mkdirしないとdaemon offでエラー出る
 RUN mkdir ーp /run/nginx
@@ -29,6 +30,14 @@ RUN echo 'root:password' | chpasswd \
 #openssl
 RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/OU=Student/CN=localhost" \
     -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+
+#telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
+RUN tar xf telegraf-1.17.2_linux_amd64.tar.gz
+RUN rm telegraf-1.17.2_linux_amd64.tar.gz
+RUN mkdir -p /etc/telegraf
+COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
+RUN chmod 777 /etc/telegraf/telegraf.conf
 
 COPY ./srcs/nginx.conf /etc/nginx/
 COPY ./srcs/index.html /var/lib/nginx/html/
