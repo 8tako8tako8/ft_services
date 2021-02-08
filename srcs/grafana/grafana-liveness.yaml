@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: grafana-deployment
+    labels:
+        app: grafana
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: grafana
+    template:
+        metadata:
+            name: grafana-pod
+            labels:
+                app: grafana
+        spec:
+          containers:
+          - name: grafana
+            image: grafana_img
+            imagePullPolicy: Never
+            ports:
+            - containerPort: 3000
+              name: grafana
+            - containerPort: 20021
+              name: ftps
+            - containerPort: 30010
+              name: pasv-min
+            - containerPort: 30011
+              name: pasv-max
+            livenessProbe:
+              exec:
+                command:
+                - /bin/sh
+                - /healthcheck.sh
+              initialDelaySeconds: 60
+              periodSeconds: 10
+              timeoutSeconds: 10
+              failureThreshold: 3
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+    name: grafana-service
+    labels:
+      app: grafana
+    annotations:
+      metallb.universe.tf/allow-shared-ip: shared
+spec:
+  selector:
+    app: grafana
+  type: LoadBalancer
+  ports:
+  - port: 3000
+    name: grafana
+    protocol: TCP
+    targetPort: 3000
+  - port: 20021
+    name: ftps
+    protocol: TCP
+    targetPort: 20021
+  - port: 30010
+    name: pasv-min
+    protocol: TCP
+    targetPort: 30010
+  - port: 30011
+    name: pasv-max
+    protocol: TCP
+    targetPort: 30011

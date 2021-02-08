@@ -7,7 +7,9 @@ minikube start --vm-driver=docker --cpus=4 --memory='4g' --extra-config=apiserve
 sudo minikube start --vm-driver=none --extra-config=apiserver.service-node-port-range=1-65535
 
 minikube start --vm-driver=docker --cpus=4 --memory='4g' --extra-config=apiserver.service-node-port-range=1-65535
+
 minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-65535
+eval $(minikube docker-env)
 
 minikube start --vm-driver=none --cpus=4 --memory='4g' --extra-config=apiserver.service-node-port-range=1-65535
 sudo minikube start --vm-driver=none --extra-config=apiserver.service-node-port-range=1-65535
@@ -65,7 +67,7 @@ echo "root:admin" | chpasswd
 ssh root@localhost -p 20022
 
 sudo minikube service nginx-service --url
-ssh root@10.0.2.15 -p 22
+ssh root@192.168.49.200 -p 22
 
 wordpressのコンテナ
 
@@ -86,8 +88,8 @@ rm latest.tar.gz
 chown -R lighttpd /usr/share/webapps/
 ln -s /usr/share/webapps/wordpress/ /var/www/localhost/htdocs/wordpress
 
-https://10.0.2.15/wordpress
-https://10.0.2.15:5050/wp-login.php
+https://192.168.49.200/wordpress
+https://192.168.49.200:5050/wp-login.php
 admin:password
 
 mysqlのコンテナ
@@ -127,8 +129,8 @@ mv phpMyAdmin-5.0.2-all-languages phpmyadmin
 chmod -R 777 /usr/share/webapps/
 ln -s /usr/share/webapps/phpmyadmin/ /var/www/localhost/htdocs/phpmyadmin
 
-https://10.0.2.15/phpmyadmin
-http://10.0.2.15:5000
+https://192.168.49.200/phpmyadmin
+http://192.168.49.200:5000
 
 ftpsのコンテナ
 docker run -d -p 21:21 -p 30000-30001:30000-30001 --name ftps ftps_img
@@ -136,7 +138,7 @@ lftp -u kmorimot,password localhost
 docker exec -it ~ sh
 cd home/kmorimot/
 
-lftp -u kmorimot,password -p 21 10.0.2.15
+lftp -u kmorimot,password -p 21 192.168.49.200
 sudo kubectl exec --stdin --tty replicaset.apps/ftps-deployment-9f6dd568c -- /bin/sh
 cd home/kmorimot/
 putでファイルサーバーへ送る
@@ -151,6 +153,11 @@ sudo kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/m
 sudo kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
 sudo kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 sudo kubectl apply -f metallb-config.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+kubectl apply -f metallb-config.yaml
 
 influxdb
 influx
