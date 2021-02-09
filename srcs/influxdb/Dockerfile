@@ -26,8 +26,8 @@ RUN mkdir -p /etc/telegraf
 COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 RUN chmod 777 /etc/telegraf/telegraf.conf
 
-#COPY ./srcs/healthcheck.sh /
-#RUN chmod 777 /healthcheck.sh
+COPY ./srcs/healthcheck.sh /
+RUN chmod 777 /healthcheck.sh
 
 COPY ./srcs/entrypoint.sh /
 RUN chmod 777 /entrypoint.sh

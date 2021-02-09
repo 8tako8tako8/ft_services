@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
           - name: ftps
-            image: ftps_img
+            image: kmorimot/ftps_img
             imagePullPolicy: Never
             ports:
             - containerPort: 21
@@ -26,6 +26,15 @@ spec:
               name: pasv-min
             - containerPort: 30001
               name: pasv-max
+            livenessProbe:
+              exec:
+                command:
+                - /bin/sh
+                - /healthcheck.sh
+              initialDelaySeconds: 20
+              periodSeconds: 10
+              timeoutSeconds: 10
+              failureThreshold: 3
 
 ---
 

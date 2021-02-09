@@ -26,15 +26,6 @@ spec:
               name: pasv-min
             - containerPort: 30001
               name: pasv-max
-            livenessProbe:
-              exec:
-                command:
-                - /bin/sh
-                - /healthcheck.sh
-              initialDelaySeconds: 60
-              periodSeconds: 10
-              timeoutSeconds: 10
-              failureThreshold: 3
 
 ---
 

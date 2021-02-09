@@ -4,9 +4,8 @@ pgrep mariadbd
 mariadbd=$?
 pgrep telegraf
 telegraf=$?
-if [ ${mariadbd} != 0 ] -o [ ${telegraf} != 0 ]
-then
-    exit 1;
+if [ ${mariadbd} != 0 -o ${telegraf} != 0 ]; then
+    exit 1
 else
     exit 0
 fi

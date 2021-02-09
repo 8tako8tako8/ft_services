@@ -30,11 +30,20 @@ spec:
         spec:
           containers:
           - name: mysql
-            image: mysql_img
+            image: kmorimot/mysql_img
             imagePullPolicy: Never
             ports:
             - containerPort: 3306
               name: mysql
+            livenessProbe:
+              exec:
+                command:
+                - /bin/sh
+                - /healthcheck.sh
+              initialDelaySeconds: 20
+              periodSeconds: 10
+              timeoutSeconds: 10
+              failureThreshold: 3
             volumeMounts:
             - mountPath: /var/lib/mysql
               name: mysql-persistent-storage

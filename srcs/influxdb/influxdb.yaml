@@ -30,11 +30,20 @@ spec:
         spec:
           containers:
           - name: influxdb
-            image: influxdb_img
+            image: kmorimot/influxdb_img
             imagePullPolicy: Never
             ports:
             - containerPort: 8086
               name: influxdb
+            livenessProbe:
+              exec:
+                command:
+                - /bin/sh
+                - /healthcheck.sh
+              initialDelaySeconds: 20
+              periodSeconds: 10
+              timeoutSeconds: 10
+              failureThreshold: 3
             volumeMounts:
             - mountPath: /var/lib/influxdb
               name: influxdb-persistent-storage

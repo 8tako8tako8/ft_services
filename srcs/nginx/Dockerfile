@@ -48,7 +48,7 @@ RUN chmod 777 /etc/nginx/nginx.conf \
     && chmod 777 /etc/ssh/sshd_config \
     && chmod 777 /entrypoint.sh
 
-#COPY ./srcs/healthcheck.sh /
-#RUN chmod 777 /healthcheck.sh
+COPY ./srcs/healthcheck.sh /
+RUN chmod 777 /healthcheck.sh
 
 ENTRYPOINT ["./entrypoint.sh"]

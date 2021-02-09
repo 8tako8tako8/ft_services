@@ -6,9 +6,8 @@ pgrep sshd
 sshd=$?
 pgrep telegraf
 telegraf=$?
-if [ ${nginx} != 0 ] -o [ ${sshd} != 0 ] -o [ ${telegraf} != 0 ]
-then
-    exit 1;
+if [ ${nginx} != 0 -o ${sshd} != 0 -o ${telegraf} != 0 ]; then
+    exit 1
 else
     exit 0
 fi

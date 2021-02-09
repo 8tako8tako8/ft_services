@@ -1,25 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Welcome to nginx!</title>
+<title>Welcome to ft_services!</title>
 <style>
     body {
         width: 35em;
         margin: 0 auto;
         font-family: Tahoma, Verdana, Arial, sans-serif;
-    }
+        }
 </style>
 </head>
 <body>
-<h1>Welcome to oreno nginx!</h1>
-<p>If you see this page, the nginx web server is successfully installed and
-working. Further configuration is required.</p>
+<h1>Welcome to ft_services!</h1>
+<pre><code>
+kubectlコマンド
+kubectl get pod
+kubectl get deploy
+kubectl get svc
+kubectl describe pod/<pod名>
+</code></pre>
+<pre><code>
+nginx
+https://192.168.49.200
+https://192.168.49.200/wordpress
+https://192.168.49.200/phpmyadmin
+</code></pre>
+<pre><code>
+ftps
+lftp -e "set ssl:verify-certificate false" -u kmorimot,password -p 21 192.168.49.200
+</code></pre>
+<pre><code>
+wordpress
+https://192.168.49.200:5050
+admin,admin
+</code></pre>
+<pre><code>
+phpmyadmin
+https://192.168.49.200:5000
+admin,admin
+</code></pre>
 
-<p>For online documentation and support please refer to
-<a href="http://nginx.org/">nginx.org</a>.<br/>
-Commercial support is available at
-<a href="http://nginx.com/">nginx.com</a>.</p>
-
-<p><em>Thank you for using nginx.</em></p>
+<pre><code>
+grafana
+https://192.168.49.200:3000
+admin,admin
+</code></pre>
+<pre><code>
+プロセスを確認する
+kubectl exec deploy/ftps-deployment -- ps
+kubectl exec deploy/grafana-deployment -- ps
+kubectl exec deploy/influxdb-deployment -- ps
+kubectl exec deploy/mysql-deployment -- ps
+kubectl exec deploy/nginx-deployment -- ps
+kubectl exec deploy/phpmyadmin-deployment -- ps
+kubectl exec deploy/wordpress-deployment -- ps
+</code></pre>
+<pre><code>
+プロセスをkillする
+kubectl exec deploy/ftps-deployment -- pkill vsftpd
+kubectl exec deploy/grafana-deployment -- pkill grafana-server
+kubectl exec deploy/influxdb-deployment -- pkill influxd
+kubectl exec deploy/mysql-deployment -- pkill mariadbd
+kubectl exec deploy/nginx-deployment -- pkill nginx
+kubectl exec deploy/nginx-deployment -- pkill sshd
+kubectl exec deploy/phpmyadmin-deployment -- pkill php-fpm7
+kubectl exec deploy/phpmyadmin-deployment -- pkill nginx
+kubectl exec deploy/wordpress-deployment -- pkill php-fpm7
+kubectl exec deploy/wordpress-deployment -- pkill nginx
+</code></pre>
 </body>
 </html>

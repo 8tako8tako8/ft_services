@@ -17,11 +17,20 @@ spec:
         spec:
           containers:
           - name: wordpress
-            image: wordpress_img
+            image: kmorimot/wordpress_img
             imagePullPolicy: Never
             ports:
             - containerPort: 5050
               name: wordpress
+            livenessProbe:
+              exec:
+                command:
+                - /bin/sh
+                - /healthcheck.sh
+              initialDelaySeconds: 20
+              periodSeconds: 10
+              timeoutSeconds: 10
+              failureThreshold: 3
 
 ---
 

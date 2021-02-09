@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
           - name: grafana
-            image: grafana_img
+            image: kmorimot/grafana_img
             imagePullPolicy: Never
             ports:
             - containerPort: 3000
@@ -28,6 +28,16 @@ spec:
               name: pasv-min
             - containerPort: 30011
               name: pasv-max
+            livenessProbe:
+              exec:
+                command:
+                - /bin/sh
+                - /healthcheck.sh
+              initialDelaySeconds: 20
+              periodSeconds: 10
+              timeoutSeconds: 10
+              failureThreshold: 3
+
 ---
 
 apiVersion: v1

@@ -15,13 +15,13 @@ kubectl create secret generic -n metallb-system memberlist --from-literal=secret
 kubectl apply -f ./srcs/metallb/metallb-config.yaml
 
 #イメージ作成
-docker build -t influxdb_img ./srcs/influxdb
-docker build -t grafana_img ./srcs/grafana
-docker build -t mysql_img ./srcs/mysql
-docker build -t phpmyadmin_img ./srcs/phpmyadmin
-docker build -t nginx_img ./srcs/nginx
-docker build -t wordpress_img ./srcs/wordpress
-docker build -t ftps_img ./srcs/ftps
+docker build -t kmorimot/influxdb_img ./srcs/influxdb
+docker build -t kmorimot/grafana_img ./srcs/grafana
+docker build -t kmorimot/mysql_img ./srcs/mysql
+docker build -t kmorimot/phpmyadmin_img ./srcs/phpmyadmin
+docker build -t kmorimot/nginx_img ./srcs/nginx
+docker build -t kmorimot/wordpress_img ./srcs/wordpress
+docker build -t kmorimot/ftps_img ./srcs/ftps
 
 #pod作成
 kubectl apply -f ./srcs/mysql/mysql.yaml
