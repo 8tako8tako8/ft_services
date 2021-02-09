@@ -41,7 +41,7 @@ RUN cd /www/ \
     && chown -R www /www/wordpress
 
 COPY ./srcs/wp-config.php /www/wordpress/
-RUN chmod 777 /www/wordpress/wp-config.php
+RUN chmod 644 /www/wordpress/wp-config.php
 
 #telegraf
 RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz

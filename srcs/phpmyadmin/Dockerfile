@@ -36,7 +36,7 @@ RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/O
     -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 
 COPY ./srcs/config.inc.php /www/phpmyadmin/
-RUN chmod 777 /www/phpmyadmin/config.inc.php
+RUN chmod 644 /www/phpmyadmin/config.inc.php
 
 COPY ./srcs/nginx.conf /etc/nginx/
 RUN chmod 777 /etc/nginx/nginx.conf

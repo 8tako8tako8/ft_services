@@ -1,0 +1,8 @@
+apiVersion: 1
+
+datasources:
+  - name: phpmyadmin
+    type: influxdb
+    access: proxy
+    database: phpmyadmin
+    url: http://influxdb-service:8086

@@ -26,7 +26,7 @@ define( 'DB_NAME', 'wpdb' );
 define( 'DB_USER', 'admin' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'password' );
+define( 'DB_PASSWORD', 'admin' );
 
 /** MySQL hostname */
 define( 'DB_HOST', 'mysql-service:3306' );

@@ -15,7 +15,7 @@ RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
     && touch /run/openrc/softlevel
 
 COPY ./srcs/mariadb-server.cnf /etc/my.cnf.d/
-RUN chmod 777 /etc/my.cnf.d/mariadb-server.cnf
+RUN chmod 744 /etc/my.cnf.d/mariadb-server.cnf
 
 #telegraf
 RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz

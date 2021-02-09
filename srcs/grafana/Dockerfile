@@ -38,7 +38,10 @@ RUN adduser -D kmorimot \
 RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/OU=Student/CN=localhost" \
     -newkey rsa:2048 -keyout /etc/ssl/private/server.key -out /etc/ssl/certs/server.crt
 
-COPY ./srcs/grafana.db /grafana-7.3.7/data/
+#COPY ./srcs/grafana.db /grafana-7.3.7/data/
+
+COPY ./srcs/datasources/* /grafana-7.3.7/conf/provisioning/datasources/
+COPY ./srcs/dashboards/* /grafana-7.3.7/conf/provisioning/dashboards/
 
 COPY ./vsftpd.conf /etc/vsftpd/vsftpd.conf
 
