@@ -4,9 +4,7 @@ RUN apk update \
     && apk add openrc \
     && apk add openssl \
     && apk add libc6-compat \
-    && apk add wget \
-    && apk add vsftpd \
-    && apk add lftp
+    && apk add wget
 
 #openrcの初期設定
 RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
@@ -41,12 +39,16 @@ RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/O
 COPY ./srcs/datasources/* /grafana-7.3.7/conf/provisioning/datasources/
 COPY ./srcs/dashboards/* /grafana-7.3.7/conf/provisioning/dashboards/
 
-COPY ./vsftpd.conf /etc/vsftpd/vsftpd.conf
+#openssl
+RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/OU=Student/CN=localhost" \
+    -newkey rsa:2048 -keyout /etc/ssl/private/server.key -out /etc/ssl/certs/server.crt
+
+COPY ./srcs/defaults.ini /grafana-7.3.7/conf/
 
 COPY ./srcs/healthcheck.sh /
 RUN chmod 777 /healthcheck.sh
 
 COPY ./srcs/entrypoint.sh /
-RUN chmod 744 /entrypoint.sh
+RUN chmod 777 /entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]

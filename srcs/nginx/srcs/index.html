@@ -2,51 +2,53 @@
 <html>
 <head>
 <title>Welcome to ft_services!</title>
-<style>
-    body {
-        width: 35em;
-        margin: 0 auto;
-        font-family: Tahoma, Verdana, Arial, sans-serif;
-        }
-</style>
+
 </head>
 <body>
 <h1>Welcome to ft_services!</h1>
 <pre><code>
-kubectlコマンド
+#kubectl command
 kubectl get pod
 kubectl get deploy
 kubectl get svc
 kubectl describe pod/<pod名>
 </code></pre>
 <pre><code>
-nginx
-https://192.168.49.200
-https://192.168.49.200/wordpress
-https://192.168.49.200/phpmyadmin
+#nginx
+<a href="http://192.168.49.200">http://192.168.49.200</a>
+<a href="https://192.168.49.200">https://192.168.49.200</a>
+<a href="https://192.168.49.200/wordpress" target="_blank">https://192.168.49.200/wordpress</a>
+<a href="https://192.168.49.200/phpmyadmin" target="_blank">https://192.168.49.200/phpmyadmin</a>
 </code></pre>
 <pre><code>
-ftps
-lftp -e "set ssl:verify-certificate false" -u kmorimot,password -p 21 192.168.49.200
+#ftps
+lftp -e "set ssl:verify-certificate no" -u kmorimot,password -p 21 192.168.49.200
+pwd
+!pwd
+ls
+!ls
+put setup.sh
+get /entrypoint.sh
 </code></pre>
 <pre><code>
-wordpress
-https://192.168.49.200:5050
+#wordpress
+<a href="https://192.168.49.200:5050" target="_blank">https://192.168.49.200:5050</a>
+<a href="https://192.168.49.200:5050/wp-login.php" target="_blank">https://192.168.49.200:5050/wp-login.php</a>
 admin,admin
 </code></pre>
 <pre><code>
-phpmyadmin
-https://192.168.49.200:5000
+#phpmyadmin
+<a href="https://192.168.49.200:5000" target="_blank">https://192.168.49.200:5000</a>
 admin,admin
 </code></pre>
 
 <pre><code>
-grafana
-https://192.168.49.200:3000
+#grafana
+<a href="https://192.168.49.200:3000" target="_blank">https://192.168.49.200:3000</a>
 admin,admin
 </code></pre>
 <pre><code>
-プロセスを確認する
+#check process
 kubectl exec deploy/ftps-deployment -- ps
 kubectl exec deploy/grafana-deployment -- ps
 kubectl exec deploy/influxdb-deployment -- ps
@@ -56,17 +58,21 @@ kubectl exec deploy/phpmyadmin-deployment -- ps
 kubectl exec deploy/wordpress-deployment -- ps
 </code></pre>
 <pre><code>
-プロセスをkillする
+#kill process
 kubectl exec deploy/ftps-deployment -- pkill vsftpd
 kubectl exec deploy/grafana-deployment -- pkill grafana-server
 kubectl exec deploy/influxdb-deployment -- pkill influxd
-kubectl exec deploy/mysql-deployment -- pkill mariadbd
+kubectl exec deploy/mysql-deployment -- pkill mysqld
 kubectl exec deploy/nginx-deployment -- pkill nginx
 kubectl exec deploy/nginx-deployment -- pkill sshd
 kubectl exec deploy/phpmyadmin-deployment -- pkill php-fpm7
 kubectl exec deploy/phpmyadmin-deployment -- pkill nginx
 kubectl exec deploy/wordpress-deployment -- pkill php-fpm7
 kubectl exec deploy/wordpress-deployment -- pkill nginx
+</code></pre>
+<pre><code>
+#ssh
+ssh root@192.168.49.200 -p 22
 </code></pre>
 </body>
 </html>

@@ -1,10 +1,10 @@
 #!/bin/sh
 #pgrepで見つからなければ終了ステータスで１となるのでどれか一つでも１であればコンテナ再起動させる
-pgrep mariadbd
-mariadbd=$?
+pgrep mysqld
+mysqld=$?
 pgrep telegraf
 telegraf=$?
-if [ ${mariadbd} != 0 -o ${telegraf} != 0 ]; then
+if [ ${mysqld} != 0 -o ${telegraf} != 0 ]; then
     exit 1
 else
     exit 0
