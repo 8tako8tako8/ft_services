@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.13
 
 RUN apk update \
     && apk add openrc \
@@ -22,10 +22,10 @@ RUN tar -zxvf grafana-7.3.7.linux-amd64.tar.gz
 RUN rm grafana-7.3.7.linux-amd64.tar.gz
 
 #telegraf
-RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
-RUN tar xf telegraf-1.17.2_linux_amd64.tar.gz
-RUN rm telegraf-1.17.2_linux_amd64.tar.gz
-RUN mkdir -p /etc/telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz \
+    && tar xf telegraf-1.17.2_linux_amd64.tar.gz \
+    && rm telegraf-1.17.2_linux_amd64.tar.gz \
+    && mkdir -p /etc/telegraf
 COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 RUN chmod 777 /etc/telegraf/telegraf.conf
 
@@ -36,6 +36,7 @@ RUN adduser -D kmorimot \
 RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/OU=Student/CN=localhost" \
     -newkey rsa:2048 -keyout /etc/ssl/private/server.key -out /etc/ssl/certs/server.crt
 
+#dashboard
 COPY ./srcs/datasources/* /grafana-7.3.7/conf/provisioning/datasources/
 COPY ./srcs/dashboards/* /grafana-7.3.7/conf/provisioning/dashboards/
 

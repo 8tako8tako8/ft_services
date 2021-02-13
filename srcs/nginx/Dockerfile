@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.13
 
 RUN apk update \
     && apk add openrc \
@@ -32,21 +32,24 @@ RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/O
     -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 
 #telegraf
-RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
-RUN tar xf telegraf-1.17.2_linux_amd64.tar.gz
-RUN rm telegraf-1.17.2_linux_amd64.tar.gz
-RUN mkdir -p /etc/telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz \
+    && tar xf telegraf-1.17.2_linux_amd64.tar.gz \
+    && rm telegraf-1.17.2_linux_amd64.tar.gz \
+    && mkdir -p /etc/telegraf
 COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 RUN chmod 777 /etc/telegraf/telegraf.conf
 
 COPY ./srcs/nginx.conf /etc/nginx/
+RUN chmod 777 /etc/nginx/nginx.conf
+
 COPY ./srcs/index.html /var/lib/nginx/html/
+RUN chmod 777 /var/lib/nginx/html/index.html
+
 COPY ./srcs/sshd_config /etc/ssh/
+RUN chmod 777 /etc/ssh/sshd_config
+
 COPY ./srcs/entrypoint.sh /
-RUN chmod 777 /etc/nginx/nginx.conf \
-    && chmod 777 /var/lib/nginx/html/index.html \
-    && chmod 777 /etc/ssh/sshd_config \
-    && chmod 777 /entrypoint.sh
+RUN chmod 777 /entrypoint.sh
 
 COPY ./srcs/healthcheck.sh /
 RUN chmod 777 /healthcheck.sh

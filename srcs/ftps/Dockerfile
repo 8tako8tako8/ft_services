@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.13
 
 RUN apk update \
     && apk add openrc \
@@ -7,6 +7,7 @@ RUN apk update \
     && apk add vsftpd \
     && apk add lftp
 
+#openrc
 RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
     && sed -i 's/^#rc_provide="!net"/rc_provide="loopback net"/' /etc/rc.conf \
     && sed -i'.bak' '/getty/d' /etc/inittab \
@@ -27,10 +28,10 @@ COPY ./srcs/vsftpd.conf /etc/vsftpd/vsftpd.conf
 RUN chmod 777 /etc/vsftpd/vsftpd.conf
 
 #telegraf
-RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
-RUN tar xf telegraf-1.17.2_linux_amd64.tar.gz
-RUN rm telegraf-1.17.2_linux_amd64.tar.gz
-RUN mkdir -p /etc/telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz \
+    && tar xf telegraf-1.17.2_linux_amd64.tar.gz \
+    && rm telegraf-1.17.2_linux_amd64.tar.gz \
+    && mkdir -p /etc/telegraf
 COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 RUN chmod 777 /etc/telegraf/telegraf.conf
 

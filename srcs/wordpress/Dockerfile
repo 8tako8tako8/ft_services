@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.13
 
 RUN apk update \
     && apk add openrc \
@@ -22,6 +22,7 @@ RUN sed -i'.bak' 's/^#rc_sys=""/rc_sys="lxc"/' /etc/rc.conf \
     && touch /run/openrc/softlevel \
     && sed -i'.bak' 's/return 404;/root html;\n\t\tindex index.html;/' /etc/nginx/conf.d/default.conf
 
+#user追加
 RUN adduser -D -g 'www' www \
     && mkdir /www \
     && chown -R www:www /var/lib/nginx \
@@ -34,6 +35,7 @@ RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/O
 COPY ./srcs/nginx.conf /etc/nginx/
 RUN chmod 777 /etc/nginx/nginx.conf
 
+#wordpressダウンロード
 RUN cd /www/ \
     && wget http://wordpress.org/latest.tar.gz \
     && tar -xzvf latest.tar.gz \
@@ -44,10 +46,10 @@ COPY ./srcs/wp-config.php /www/wordpress/
 RUN chmod 644 /www/wordpress/wp-config.php
 
 #telegraf
-RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz
-RUN tar xf telegraf-1.17.2_linux_amd64.tar.gz
-RUN rm telegraf-1.17.2_linux_amd64.tar.gz
-RUN mkdir -p /etc/telegraf
+RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2_linux_amd64.tar.gz \
+    && tar xf telegraf-1.17.2_linux_amd64.tar.gz \
+    && rm telegraf-1.17.2_linux_amd64.tar.gz \
+    && mkdir -p /etc/telegraf
 COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 RUN chmod 777 /etc/telegraf/telegraf.conf
 

@@ -1,9 +1,9 @@
 #!/bin/zsh
-#portの使用状況確認
+#portの使用状況確認sudo lsof -i -P | grep "LISTEN"
 #apt-get install lftp　と　~/.lftprcの設定
 
-#minikube delete
-#minikube start --vm-driver=docker --cpus=4 --memory='3g' --extra-config=apiserver.service-node-port-range=1-65535
+minikube delete
+
 minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-65535
 
 eval $(minikube docker-env)
@@ -30,7 +30,6 @@ kubectl apply -f ./srcs/grafana/grafana.yaml
 kubectl apply -f ./srcs/phpmyadmin/phpmyadmin.yaml
 kubectl apply -f ./srcs/nginx/nginx.yaml
 kubectl apply -f ./srcs/ftps/ftps.yaml
-sleep 3
 kubectl apply -f ./srcs/wordpress/wordpress.yaml
 
 #minikube dashboard

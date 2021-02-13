@@ -16,7 +16,7 @@ wp user create kmorimot kmorimot@example.com --display_name="kmorimot" --role=ed
 wp user create john john@example.com --display_name="john" --role=editor --user_pass="john" --path=/www/wordpress
 wp user create kao kao@example.com --display_name="kao" --role=author --user_pass="kao" --path=/www/wordpress
 
-#telegrafk起動
+#telegraf起動
 /telegraf-1.17.2/usr/bin/telegraf --config /etc/telegraf/telegraf.conf &
 
 #nginxの起動

@@ -22,8 +22,6 @@ spec:
             ports:
             - containerPort: 3000
               name: grafana
-            - containerPort: 20021
-              name: ftps
             - containerPort: 30010
               name: pasv-min
             - containerPort: 30011
@@ -57,10 +55,6 @@ spec:
     name: grafana
     protocol: TCP
     targetPort: 3000
-  - port: 20021
-    name: ftps
-    protocol: TCP
-    targetPort: 20021
   - port: 30010
     name: pasv-min
     protocol: TCP
