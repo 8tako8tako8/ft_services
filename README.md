@@ -15,6 +15,7 @@ alpineイメージから作成する制約あり。
 git clone ...
 cd ft_services
 ./setup.sh
+ブラウザでhttp://192.168.49.200:80にアクセス
 ```
 ## Constitution
 ![image](https://user-images.githubusercontent.com/65395999/109416387-440a1700-7a01-11eb-88e4-6b8c15abe0b2.png)
