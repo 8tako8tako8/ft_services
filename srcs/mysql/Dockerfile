@@ -29,6 +29,9 @@ RUN chmod 777 /etc/telegraf/telegraf.conf
 COPY ./srcs/healthcheck.sh /
 RUN chmod 777 /healthcheck.sh
 
+COPY ./srcs/create_tables.sql /
+RUN chmod 777 /create_tables.sql
+
 COPY ./srcs/entrypoint.sh /
 RUN chmod 777 /entrypoint.sh
 

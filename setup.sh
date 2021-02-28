@@ -2,7 +2,7 @@
 #portの使用状況確認sudo lsof -i -P | grep "LISTEN"
 #apt-get install lftp　と　~/.lftprcの設定
 
-minikube delete
+#minikube delete
 
 minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-65535
 

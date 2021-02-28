@@ -8,6 +8,11 @@ mysql -e "CREATE DATABASE wpdb;"
 mysql -e "CREATE USER 'admin'@'%' identified by 'admin';"
 mysql -e "GRANT ALL PRIVILEGES ON wpdb.* TO 'admin'@'%';"
 mysql -e "FLUSH PRIVILEGES;"
+
+mysql -u root < create_tables.sql
+mysql -e "CREATE USER 'pma'@'%' identified by 'pmapasssss';"
+mysql -e "GRANT ALL PRIVILEGES ON phpmyadmin.* TO 'pma'@'%';"
+mysql -e "FLUSH PRIVILEGES;"
 rc-service mariadb stop
 
 #telegraf起動

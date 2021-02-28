@@ -4,7 +4,7 @@ RUN apk update \
     && apk add openrc \
     && apk add openssl \
     && apk add nginx \
-    && apk add php7-fpm php7-session php7-common php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom \
+    && apk add php7-fpm php7-session php7-common php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom php7-mbstring \
     && apk add wget \
     && apk add libc6-compat
 
@@ -31,8 +31,9 @@ RUN cd /www/ \
     && tar zxvf phpMyAdmin-5.0.2-all-languages.tar.gz \
     && rm phpMyAdmin-5.0.2-all-languages.tar.gz \
     && mv phpMyAdmin-5.0.2-all-languages phpmyadmin \
-    && chown -R www /www/phpmyadmin
-
+    && chown -R www /www/phpmyadmin \
+    && mkdir /www/phpmyadmin/tmp \
+    && chmod 777 /www/phpmyadmin/tmp
 #openssl
 RUN openssl req -x509 -nodes -days 365 -subj "/C=JP/ST=JAPAN/L=Tokyo/O=42tokyo/OU=Student/CN=localhost" \
     -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt

@@ -2,6 +2,7 @@
 
 ## Overview
 Kubernetesを用いて７つのサービスをデプロイする。
+alpineイメージから作成する制約あり。
 
 ## Requirement
 - XUbuntu 18.04.5
