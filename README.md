@@ -28,6 +28,3 @@ cd ft_services
 - [introduction-to-kubernetes](https://cybozu.github.io/introduction-to-kubernetes/introduction-to-kubernetes.html)
 - [Kubernetes道場 Advent Calendar 2018](https://qiita.com/advent-calendar/2018/k8s-dojo)
 - [Alpine Linux](https://wiki.alpinelinux.org/wiki/Main_Page)
-
-## Author
-[twitter](https://twitter.com/totti13101176)
