@@ -22,7 +22,7 @@ cd ft_services
 ![image](https://user-images.githubusercontent.com/65395999/109416387-440a1700-7a01-11eb-88e4-6b8c15abe0b2.png)
 
 ### Welcome to ft_services(nginx)
-<img width="587" alt="nginx" src="https://user-images.githubusercontent.com/65395999/115219897-e95c8400-a142-11eb-8e15-8417612536ba.png">
+<img width="584" alt="nginx" src="https://user-images.githubusercontent.com/65395999/115221209-64726a00-a144-11eb-9ab5-c5e5ae036be2.png">
 
 ### WordPress
 - ブログ投稿サイト
