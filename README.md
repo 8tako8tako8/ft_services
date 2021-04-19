@@ -17,8 +17,22 @@ cd ft_services
 ./setup.sh
 ブラウザでhttp://192.168.49.200:80にアクセス
 ```
+<img width="587" alt="nginx" src="https://user-images.githubusercontent.com/65395999/115219897-e95c8400-a142-11eb-8e15-8417612536ba.png">
+
 ## Constitution
 ![image](https://user-images.githubusercontent.com/65395999/109416387-440a1700-7a01-11eb-88e4-6b8c15abe0b2.png)
+
+### WordPress
+- ブログ投稿サイト
+<img width="582" alt="wp" src="https://user-images.githubusercontent.com/65395999/115219873-e497d000-a142-11eb-8b5c-80565052a5d6.png">
+
+### phpMyAdmin
+- MySQL管理用のダッシュボード
+<img width="596" alt="pma" src="https://user-images.githubusercontent.com/65395999/115219907-ec577480-a142-11eb-962c-4f1854263937.png">
+
+### Grafana
+- 各podのCPU使用状況などがInfluxDBに保存されており、そのデータを可視化する。
+<img width="594" alt="grafana" src="https://user-images.githubusercontent.com/65395999/115219918-eeb9ce80-a142-11eb-9218-93ffbc1ef8b8.png">
 
 ## About debug
 略
